@@ -95,7 +95,7 @@ const fbMessage = (id,text) => {
       recipient: { id },
       message: { text },
   });
-  context qs = 'access_token=' + encodeURIComponent(PAGE_ACCESS_TOKEN);
+  const qs = 'access_token=' + encodeURIComponent(PAGE_ACCESS_TOKEN);
   return fetch('https://graph.facebook.com/me/messages?' + qs, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
