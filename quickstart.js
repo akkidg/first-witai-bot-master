@@ -31,7 +31,7 @@ const PAGE_ACCESS_TOKEN = process.env.MESSENGER_PAGE_ACCESS_TOKEN;
 // assets located at this address. 
 const SERVER_URL = process.env.SERVER_URL;
 
-const WIT_TOKEN = process.env.WIT_TOKEN;
+const accessToken = process.env.WIT_TOKEN;
 
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
   console.error("Missing config values");
@@ -291,7 +291,7 @@ const actions = {
   },
 };
 
-const client = new Wit({WIT_TOKEN, actions});
+const client = new Wit({accessToken, actions});
 interactive(client);
 
 var getCapitalValue = function(country,callback) {
