@@ -296,7 +296,14 @@ const actions = {
   },
 };
 
-const client = new Wit({accessToken, actions});
+// Setting up our bot
+const wit = new Wit({
+  accessToken: accessToken,
+  actions,
+  logger: new log.Logger(log.INFO)
+});
+
+//const client = new Wit({accessToken, actions});
 
 var getCapitalValue = function(country,callback) {
 
