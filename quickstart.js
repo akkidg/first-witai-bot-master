@@ -86,6 +86,70 @@ const findOrCreateSession = (fbid) => {
   return process.argv[2];
 })();*/
 
+const actions = {
+  send(request, response) {
+    const {sessionId, context, entities} = request;
+
+    const recipientId = sessions[sessionId].fbid;
+
+    if(recipientId){      
+      const {text, quickreplies} = response;
+
+      return new Promise(function(resolve, reject){      
+        return fbMessage(recipientId, text)
+        .then(() => null)
+        .catch((err) => {
+          console.error(
+            'Oops! An error occurred while forwarding the response to',
+            recipientId,
+            ':',
+            err.stack || err
+          );
+        });
+        console.log('sending...', JSON.stringify(response));
+        return resolve();
+      });
+    }
+  },  
+  getCapital({context, entities}) {
+
+    return new Promise(function(resolve, reject){ 
+
+      const location = firstEntityValue(entities,'location');
+
+      if (location) {
+      getCapitalValue(location,function(){
+        console.log("capital returned : " + capital); 
+        if(capital != ""){
+          context.country = capital;
+          delete context.missingLocation; 
+          return resolve(context);
+        }else{
+          context.missingLocation = true;
+          delete context.country; 
+          return resolve(context);
+        }
+      }); 
+      
+      } else {
+        console.log("excuted else from main ");
+        context.missingLocation = true;
+        delete context.country;
+
+        return resolve(context);
+      }
+    });
+    
+  },
+};
+
+// Setting up our bot
+const wit = new Wit({
+  accessToken: accessToken,
+  actions,
+  logger: new log.Logger(log.INFO)
+});
+
 const fbMessage = (id,text) => {
   const body = JSON.stringify({
       recipient: { id },
@@ -239,69 +303,7 @@ const firstEntityValue = (entities, entity) => {
   return typeof val === 'object' ? val.value : val;
 };
 
-const actions = {
-  send(request, response) {
-    const {sessionId, context, entities} = request;
 
-    const recipientId = sessions[sessionId].fbid;
-
-    if(recipientId){      
-      const {text, quickreplies} = response;
-
-      return new Promise(function(resolve, reject){      
-        return fbMessage(recipientId, text)
-        .then(() => null)
-        .catch((err) => {
-          console.error(
-            'Oops! An error occurred while forwarding the response to',
-            recipientId,
-            ':',
-            err.stack || err
-          );
-        });
-        console.log('sending...', JSON.stringify(response));
-        return resolve();
-      });
-    }
-  },  
-  getCapital({context, entities}) {
-
-    return new Promise(function(resolve, reject){ 
-
-      const location = firstEntityValue(entities,'location');
-
-      if (location) {
-      getCapitalValue(location,function(){
-        console.log("capital returned : " + capital); 
-        if(capital != ""){
-          context.country = capital;
-          delete context.missingLocation; 
-          return resolve(context);
-        }else{
-          context.missingLocation = true;
-          delete context.country; 
-          return resolve(context);
-        }
-      }); 
-      
-      } else {
-        console.log("excuted else from main ");
-        context.missingLocation = true;
-        delete context.country;
-
-        return resolve(context);
-      }
-    });
-    
-  },
-};
-
-// Setting up our bot
-const wit = new Wit({
-  accessToken: accessToken,
-  actions,
-  logger: new log.Logger(log.INFO)
-});
 
 //const client = new Wit({accessToken, actions});
 
