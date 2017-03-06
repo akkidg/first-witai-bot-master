@@ -31,7 +31,7 @@ const PAGE_ACCESS_TOKEN = process.env.MESSENGER_PAGE_ACCESS_TOKEN;
 // assets located at this address. 
 const SERVER_URL = process.env.SERVER_URL;
 
-const accessToken = process.env.WIT_TOKEN;
+const WIT_TOKEN = process.env.WIT_TOKEN;
 
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
   console.error("Missing config values");
@@ -41,10 +41,8 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 try {
   // if running from repo
   Wit = require('../').Wit;
-  interactive = require('../').interactive;
 } catch (e) {
   Wit = require('node-wit').Wit;
-  interactive = require('node-wit').interactive;
 }
 
 // This will contain all user sessions.
@@ -292,7 +290,6 @@ const actions = {
 };
 
 const client = new Wit({accessToken, actions});
-interactive(client);
 
 var getCapitalValue = function(country,callback) {
 
