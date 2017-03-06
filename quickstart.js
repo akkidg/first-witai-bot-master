@@ -56,8 +56,6 @@ try {
   interactive = require('node-wit').interactive;
 }
 
-var request = require('request');
-
 // This will contain all user sessions.
 // Each session has an entry:
 // sessionId -> {fbid: facebookUserId, context: sessionState}
