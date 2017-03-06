@@ -73,7 +73,7 @@ const findOrCreateSession = (fbid) => {
 
 // Setting up our bot
 const wit = new Wit({
-  accessToken: WIT_TOKEN,
+  accessToken: accessToken,
   actions,
   logger: new log.Logger(log.INFO)
 });
