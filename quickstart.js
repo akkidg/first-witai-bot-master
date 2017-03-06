@@ -72,11 +72,11 @@ const findOrCreateSession = (fbid) => {
 };
 
 // Setting up our bot
-const wit = new Wit({
+/*const wit = new Wit({
   accessToken: accessToken,
   actions,
   logger: new log.Logger(log.INFO)
-});
+});*/
 
 /*const accessToken = (() => {
   if (process.argv.length !== 3) {
