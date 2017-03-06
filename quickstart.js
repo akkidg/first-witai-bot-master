@@ -71,6 +71,13 @@ const findOrCreateSession = (fbid) => {
   return sessionId;
 };
 
+// Setting up our bot
+const wit = new Wit({
+  accessToken: WIT_TOKEN,
+  actions,
+  logger: new log.Logger(log.INFO)
+});
+
 /*const accessToken = (() => {
   if (process.argv.length !== 3) {
     console.log('usage: node examples/basic.js <wit-access-token>');
@@ -150,7 +157,7 @@ app.post('/webhook', function (req, res) {
 
             // Let's forward the message to the Wit.ai Bot Engine
             // This will run all actions until our bot has nothing left to do
-            Wit.runActions(
+            wit.runActions(
               sessionId, // the user's current session
               text, // the user's message
               sessions[sessionId].context // the user's current session state
