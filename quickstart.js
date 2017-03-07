@@ -5,6 +5,7 @@ let interactive = null;
 let log = null;
 
 var capital = "";
+var weatherObject = "";
 
 // defining constants
 
@@ -145,8 +146,7 @@ const actions = {
 
         return resolve(context);
       }
-    });
-    
+    });    
   },
   getWeather({context, entities}) {
 
@@ -156,9 +156,9 @@ const actions = {
 
       if (location) {
       getWeatherForecast(location,function(){
-        console.log("forecast returned : " + capital); 
-        if(capital != ""){
-          context.forecast = capital;
+        console.log("forecast returned : " + weatherObject); 
+        if(weatherObject != ""){
+          context.forecast = weatherObject;
           delete context.missingLocation; 
           return resolve(context);
         }else{
@@ -175,8 +175,7 @@ const actions = {
 
         return resolve(context);
       }
-    });
-    
+    });    
   },
   // You should implement your custom actions here
   // See https://wit.ai/docs/quickstart
@@ -379,19 +378,19 @@ var getWeatherForecast = function(city,callback) {
   
   request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-        var jsonObject =  JSON.parse(body);
-        console.log("json object" + jsonObject);
-        if(jsonObject.hasOwnProperty('cod')){
-            capital = "";
+
+        var newJsonObject = JSON.parse(body);
+        if(newJsonObject.hasOwnProperty('message')){
+            weatherObject = "";
             callback();
         }else{
-          var weatherObjectArray = jsonObject.weather;
-          capital = weatherObjectArray[0].description;
+          var weatherObjectArray = newJsonObject.weather;
+          weatherObject = weatherObjectArray[0].description;
           callback();
         }
      }else{
         console.log("error in api " + error);
-        capital = "";
+        weatherObject = "";
         callback();
      }
   });
