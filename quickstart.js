@@ -363,7 +363,7 @@ var getCapitalValue = function(country,callback) {
           callback();
         }
      }else{
-        console.log("error in api " + error);
+        console.log("capital not found");
         capital = "";
         callback();
      }
@@ -381,6 +381,7 @@ var getWeatherForecast = function(city,callback) {
   request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
         var jsonObject =  JSON.parse(body);
+        console.log("json object" + jsonObject);
         if(jsonObject.hasOwnProperty('cod')){
             capital = "";
             callback();
@@ -390,7 +391,7 @@ var getWeatherForecast = function(city,callback) {
           callback();
         }
      }else{
-        console.log("capital not found");
+        console.log("error in api " + error);
         capital = "";
         callback();
      }
