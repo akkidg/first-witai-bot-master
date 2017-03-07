@@ -34,6 +34,8 @@ const SERVER_URL = process.env.SERVER_URL;
 
 const accessToken = process.env.WIT_TOKEN;
 
+const WEATHER_API_KEY = precess.env.WEATHER_MAP_API_KEY;
+
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
   console.error("Missing config values");
   process.exit(1);
@@ -140,6 +142,36 @@ const actions = {
         console.log("excuted else from main ");
         context.missingLocation = true;
         delete context.country;
+
+        return resolve(context);
+      }
+    });
+    
+  },
+  getWeather({context, entities}) {
+
+    return new Promise(function(resolve, reject){ 
+
+      const location = firstEntityValue(entities,'location');
+
+      if (location) {
+      getWeatherForecast(location,function(){
+        console.log("forecast returned : " + capital); 
+        if(capital != ""){
+          context.forecast = capital;
+          delete context.missingLocation; 
+          return resolve(context);
+        }else{
+          context.missingLocation = true;
+          delete context.forecast; 
+          return resolve(context);
+        }
+      }); 
+      
+      } else {
+        console.log("excuted else from main ");
+        context.missingLocation = true;
+        delete context.forecast;
 
         return resolve(context);
       }
@@ -310,9 +342,9 @@ const firstEntityValue = (entities, entity) => {
   return typeof val === 'object' ? val.value : val;
 };
 
-
-
 //const client = new Wit({accessToken, actions});
+
+// returns capital value
 
 var getCapitalValue = function(country,callback) {
 
@@ -328,6 +360,32 @@ var getCapitalValue = function(country,callback) {
         }else{
           console.log("capital found" + jsonObject[0].capital);
           capital = jsonObject[0].capital;
+          callback();
+        }
+     }else{
+        console.log("capital not found");
+        capital = "";
+        callback();
+     }
+  });
+};
+
+// returns weather forecast of city
+
+var getWeatherForecast = function(city,callback) {
+
+  console.log("city is: " + city);
+  const url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + WEATHER_API_KEY;
+
+  request(url, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+        var jsonObject =  JSON.parse(body);
+        if(jsonObject.hasOwnProperty('cod')){
+            capital = "";
+            callback();
+        }else{
+          var weatherObjectArray = jsonObject.weather;
+          capital = weatherObjectArray[0].description;
           callback();
         }
      }else{
