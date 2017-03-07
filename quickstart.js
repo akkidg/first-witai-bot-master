@@ -34,7 +34,7 @@ const SERVER_URL = process.env.SERVER_URL;
 
 const accessToken = process.env.WIT_TOKEN;
 
-const WEATHER_API_KEY = precess.env.WEATHER_MAP_API_KEY;
+const WEATHER_API_KEY = process.env.WEATHER_MAP_API_KEY;
 
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
   console.error("Missing config values");
