@@ -363,7 +363,7 @@ var getCapitalValue = function(country,callback) {
           callback();
         }
      }else{
-        console.log("capital not found");
+        console.log("error in api " + error);
         capital = "";
         callback();
      }
@@ -376,6 +376,7 @@ var getWeatherForecast = function(city,callback) {
 
   console.log("city is: " + city);
   const url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + WEATHER_API_KEY;
+  https://api.openweathermap.org/data/2.5/weather?q=london&appid=c8adb6a3028b109590bcc1da5836de12
 
   request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
