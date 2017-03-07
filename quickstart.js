@@ -376,8 +376,7 @@ var getWeatherForecast = function(city,callback) {
 
   console.log("city is: " + city);
   const url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + WEATHER_API_KEY;
-  https://api.openweathermap.org/data/2.5/weather?q=london&appid=c8adb6a3028b109590bcc1da5836de12
-
+  
   request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
         var jsonObject =  JSON.parse(body);
