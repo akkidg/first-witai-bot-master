@@ -86,61 +86,34 @@ const findOrCreateSession = (fbid) => {
   return process.argv[2];
 })();*/
 
+// Our bot actions
 const actions = {
-  send(request, response) {
-    const {sessionId, context, entities} = request;
-
+  send({sessionId}, {text}) {
+    // Our bot has something to say!
+    // Let's retrieve the Facebook user whose session belongs to
     const recipientId = sessions[sessionId].fbid;
-
-    if(recipientId){      
-      const {text, quickreplies} = response;
-
-      return new Promise(function(resolve, reject){      
-        return fbMessage(recipientId, text)
-        .then(() => null)
-        .catch((err) => {
-          console.error(
-            'Oops! An error occurred while forwarding the response to',
-            recipientId,
-            ':',
-            err.stack || err
-          );
-        });
-        console.log('sending...', JSON.stringify(response));
-        return resolve();
+    if (recipientId) {
+      // Yay, we found our recipient!
+      // Let's forward our bot response to her.
+      // We return a promise to let our bot know when we're done sending
+      return fbMessage(recipientId, text)
+      .then(() => null)
+      .catch((err) => {
+        console.error(
+          'Oops! An error occurred while forwarding the response to',
+          recipientId,
+          ':',
+          err.stack || err
+        );
       });
+    } else {
+      console.error('Oops! Couldn\'t find user for session:', sessionId);
+      // Giving the wheel back to our bot
+      return Promise.resolve()
     }
-  },  
-  getCapital({context, entities}) {
-
-    return new Promise(function(resolve, reject){ 
-
-      const location = firstEntityValue(entities,'location');
-
-      if (location) {
-      getCapitalValue(location,function(){
-        console.log("capital returned : " + capital); 
-        if(capital != ""){
-          context.country = capital;
-          delete context.missingLocation; 
-          return resolve(context);
-        }else{
-          context.missingLocation = true;
-          delete context.country; 
-          return resolve(context);
-        }
-      }); 
-      
-      } else {
-        console.log("excuted else from main ");
-        context.missingLocation = true;
-        delete context.country;
-
-        return resolve(context);
-      }
-    });
-    
   },
+  // You should implement your custom actions here
+  // See https://wit.ai/docs/quickstart
 };
 
 // Setting up our bot
