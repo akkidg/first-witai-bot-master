@@ -2,6 +2,7 @@
 
 let Wit = null;
 let interactive = null;
+let log = null;
 
 var capital = "";
 
