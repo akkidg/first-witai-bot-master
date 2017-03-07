@@ -41,8 +41,10 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 try {
   // if running from repo
   Wit = require('../').Wit;
+  log = require('../').log;
 } catch (e) {
   Wit = require('node-wit').Wit;
+  log = require('node-wit').log;
 }
 
 // This will contain all user sessions.
