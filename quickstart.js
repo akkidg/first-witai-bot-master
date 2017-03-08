@@ -417,18 +417,18 @@ function generateTemplateObject(jsonObject){
   var windObject = jsonObject.wind;
 
   var json = {
-              "attachment":{
-                "type": "template",
-                "payload": {
-                  "template_type": "generic",
-                  "elements": [{
-                    "title": "Weather Forecast for " + jsonObject.name + " will be " + weatherObjectArray[0].description,
-                    "subtitle":"Temp. : " + mainObject.temp + "\n Wind Speed: " + windObject.speed  + "\n Humidity: " + mainObject.humidity,
-                    "image_url": "http://openweathermap.org/img/w/" + weatherObjectArray[0].icon + ".png",
-                    "buttons": [{
-                      "type": "postback",
-                      "payload": "DEVELOPER_DEFINED_PAYLOAD_FOR_PARTY_SPECIAL_BACK",
-                      "title": "Back"
+              attachment:{
+                type: "template",
+                payload: {
+                  template_type: "generic",
+                  elements: [{
+                    title: "Weather Forecast for " + jsonObject.name + " will be " + weatherObjectArray[0].description,
+                    subtitle:"Temp. : " + mainObject.temp + "\n Wind Speed: " + windObject.speed  + "\n Humidity: " + mainObject.humidity,
+                    image_url: "http://openweathermap.org/img/w/" + weatherObjectArray[0].icon + ".png",
+                    buttons: [{
+                      type: "postback",
+                      payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_PARTY_SPECIAL_BACK",
+                      title: "Back"
                     }],
                   }]
                   }
