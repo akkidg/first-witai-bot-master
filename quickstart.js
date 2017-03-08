@@ -100,7 +100,12 @@ const actions = {
 
     const recipientId = sessions[sessionId].fbid;
     if (recipientId) {
-      return new Promise(function(resolve, reject){ 
+      return new Promise(function(resolve, reject){
+
+        if(!context.missingLocation && context.forecast){
+          console.log("location sent");
+        }
+
         return fbMessage(recipientId, text)
         .then(() => null)
         .catch((err) => {
@@ -167,7 +172,6 @@ const actions = {
           return resolve(context);
         }
       }); 
-      
       } else {
         console.log("excuted else from main ");
         context.missingLocation = true;
@@ -374,7 +378,7 @@ var getCapitalValue = function(country,callback) {
 var getWeatherForecast = function(city,callback) {
 
   console.log("city is: " + city);
-  const url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + WEATHER_API_KEY;
+  const url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=metric&appid=" + WEATHER_API_KEY;
   
   request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
@@ -384,8 +388,8 @@ var getWeatherForecast = function(city,callback) {
             weatherObject = "";
             callback();
         }else{
-          var weatherObjectArray = newJsonObject.weather;
-          weatherObject = weatherObjectArray[0].description;
+          //var weatherObjectArray = newJsonObject.weather;
+          weatherObject = generateTemplateObject(newJsonObject);
           callback();
         }
      }else{
@@ -395,6 +399,36 @@ var getWeatherForecast = function(city,callback) {
      }
   });
 };
+
+function generateTemplateObject(jsonObject){
+
+  var weatherObjectArray = jsonObject.weather;
+  var mainObject = jsonObject.main;
+  var windObject = jsonObject.wind;
+
+  var json = attachment:{
+      type: "template",
+      payload: {
+        template_type: "generic",
+        elements: [{
+          title: "Weather Forecast for " + jsonObject.name,
+          subtitle:"Temp. : " + mainObject.temp + "\n Wind Speed: " + windObject.speed  + "\n Humidity: " + mainObject.humidity,
+          item_url: "",               
+          image_url: "http://openweathermap.org/img/w/" + weatherObjectArray[0].icon + ".png",
+          buttons: [{
+            type: "postback",
+            payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_PARTY_SPECIAL_BACK",
+            title: "Back"
+          }],
+        }]
+      }
+    } 
+
+  return JSON.stringify(json);   
+
+}
+
+
 
 // Start server
 // Webhooks must be available via SSL with a certificate signed by a valid 
