@@ -402,8 +402,7 @@ function generateTemplateObject(jsonObject){
   var mainObject = jsonObject.main;
   var windObject = jsonObject.wind;
 
-  var json = {
-            attachment:{
+  var json = attachment:{
             type: "template",
             payload: {
               template_type: "generic",
@@ -419,7 +418,6 @@ function generateTemplateObject(jsonObject){
                 }],
               }]
             }
-          }
         };
 
   return JSON.stringify(json);   
