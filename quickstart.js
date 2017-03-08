@@ -111,7 +111,7 @@ const actions = {
         }else if(!context.missingLocation && context.forecast){
             body = JSON.stringify({
               recipient: { id },
-              message: {JSON.stringify(text)},
+              message: {text},
             });
         }
 
@@ -435,7 +435,7 @@ function generateTemplateObject(jsonObject){
                 }
               }
   
-  return json;   
+  return JSON.stringify(json);   
 
 }
 
