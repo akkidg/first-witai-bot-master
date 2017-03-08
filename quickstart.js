@@ -433,7 +433,7 @@ function generateTemplateObject(jsonObject){
                   }]
                   }
                 }
-              }
+              };
   
   return json;   
 
