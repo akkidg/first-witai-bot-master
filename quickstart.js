@@ -109,11 +109,10 @@ const actions = {
               message: { text },
             });
         }else if(!context.missingLocation && context.forecast){
-            var recipient = JSON.stringify({recipient: { id }});
-            body = {
-              recipient,
+            body = JSON.stringify({
+              recipient: { id },
               message: text,
-            };
+            });
         }
 
         return fbMessage(body)
@@ -436,7 +435,7 @@ function generateTemplateObject(jsonObject){
                 }
               }
   
-  return JSON.stringify(json);   
+  return json;   
 
 }
 
