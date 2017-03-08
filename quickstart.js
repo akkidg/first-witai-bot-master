@@ -102,10 +102,6 @@ const actions = {
     if (recipientId) {
       return new Promise(function(resolve, reject){
 
-        if(!context.missingLocation && context.forecast){
-          console.log("location sent");
-        }
-
         return fbMessage(recipientId, text)
         .then(() => null)
         .catch((err) => {
@@ -406,23 +402,25 @@ function generateTemplateObject(jsonObject){
   var mainObject = jsonObject.main;
   var windObject = jsonObject.wind;
 
-  var json = attachment:{
-      type: "template",
-      payload: {
-        template_type: "generic",
-        elements: [{
-          title: "Weather Forecast for " + jsonObject.name,
-          subtitle:"Temp. : " + mainObject.temp + "\n Wind Speed: " + windObject.speed  + "\n Humidity: " + mainObject.humidity,
-          item_url: "",               
-          image_url: "http://openweathermap.org/img/w/" + weatherObjectArray[0].icon + ".png",
-          buttons: [{
-            type: "postback",
-            payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_PARTY_SPECIAL_BACK",
-            title: "Back"
-          }],
-        }]
-      }
-    } 
+  var json = {
+            attachment:{
+            type: "template",
+            payload: {
+              template_type: "generic",
+              elements: [{
+                title: "Weather Forecast for " + jsonObject.name,
+                subtitle:"Temp. : " + mainObject.temp + "\n Wind Speed: " + windObject.speed  + "\n Humidity: " + mainObject.humidity,
+                item_url: "",               
+                image_url: "http://openweathermap.org/img/w/" + weatherObjectArray[0].icon + ".png",
+                buttons: [{
+                  type: "postback",
+                  payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_PARTY_SPECIAL_BACK",
+                  title: "Back"
+                }],
+              }]
+            }
+          }
+        };
 
   return JSON.stringify(json);   
 
