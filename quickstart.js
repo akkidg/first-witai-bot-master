@@ -99,10 +99,9 @@ const actions = {
     const {text, quickreplies} = response;
 
     const recipientId = sessions[sessionId].fbid;
+    var body;
     if (recipientId) {
       return new Promise(function(resolve, reject){
-
-        var body;
 
         if((!context.missingLocation && context.country) || context.missingLocation){
             body = JSON.stringify({
@@ -116,7 +115,7 @@ const actions = {
             });
         }
 
-        return fbMessage(body)
+        return fbMessage(recipientId, body)
         .then(() => null)
         .catch((err) => {
           console.error(
@@ -202,7 +201,7 @@ const wit = new Wit({
   logger: new log.Logger(log.INFO)
 });
 
-const fbMessage = (body) => {
+const fbMessage = (id,body) => {
   
   const qs = 'access_token=' + encodeURIComponent(PAGE_ACCESS_TOKEN);
   return fetch('https://graph.facebook.com/me/messages?' + qs, {
