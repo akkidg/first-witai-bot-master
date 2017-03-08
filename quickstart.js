@@ -102,13 +102,15 @@ const actions = {
     if (recipientId) {
       return new Promise(function(resolve, reject){
 
+        var body;
+
         if((!context.missingLocation && context.country) || context.missingLocation){
-            const body = JSON.stringify({
+            body = JSON.stringify({
               recipient: { recipientId },
               message: { text },
             });
         }else if(!context.missingLocation && context.forecast){
-            const body = JSON.stringify({
+            body = JSON.stringify({
               recipient: { recipientId },
               message: text,
             });
