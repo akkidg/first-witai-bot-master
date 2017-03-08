@@ -424,7 +424,6 @@ function generateTemplateObject(jsonObject){
                   "elements": [{
                     "title": "Weather Forecast for " + jsonObject.name + " will be " + weatherObjectArray[0].description,
                     "subtitle":"Temp. : " + mainObject.temp + "\n Wind Speed: " + windObject.speed  + "\n Humidity: " + mainObject.humidity,
-                    "item_url": "",               
                     "image_url": "http://openweathermap.org/img/w/" + weatherObjectArray[0].icon + ".png",
                     "buttons": [{
                       "type": "postback",
@@ -436,7 +435,7 @@ function generateTemplateObject(jsonObject){
                 }
               };
   
-  return json;   
+  return JSON.parse(json);   
 
 }
 
