@@ -98,29 +98,29 @@ const actions = {
     const {sessionId, context, entities} = request;
     const {text, quickreplies} = response;
 
-    const recipientId = sessions[sessionId].fbid;
+    const id = sessions[sessionId].fbid;
     var body;
-    if (recipientId) {
+    if (id) {
       return new Promise(function(resolve, reject){
 
         if((!context.missingLocation && context.country) || context.missingLocation){
             body = JSON.stringify({
-              recipient: { recipientId },
+              recipient: { id },
               message: { text },
             });
         }else if(!context.missingLocation && context.forecast){
             body = JSON.stringify({
-              recipient: { recipientId },
+              recipient: { id },
               message: text,
             });
         }
 
-        return fbMessage(recipientId, body)
+        return fbMessage(body)
         .then(() => null)
         .catch((err) => {
           console.error(
             'Oops! An error occurred while forwarding the response to',
-            recipientId,
+            id,
             ':',
             err.stack || err
           );
@@ -201,7 +201,7 @@ const wit = new Wit({
   logger: new log.Logger(log.INFO)
 });
 
-const fbMessage = (id,body) => {
+const fbMessage = (body) => {
   
   const qs = 'access_token=' + encodeURIComponent(PAGE_ACCESS_TOKEN);
   return fetch('https://graph.facebook.com/me/messages?' + qs, {
@@ -262,8 +262,14 @@ app.post('/webhook', function (req, res) {
           // We retrieve the message content
           const {text, attachments} = event.message;
 
+
+
           if(attachments){
-            fbMessage(sender, 'Sorry I can only process text messages for now.')
+            const body = JSON.stringify({
+              recipient: { id:sender },
+              message: 'Sorry I can only process text messages for now.',
+            });
+            fbMessage(body)
           }else if(text){
             // We received a text message
 
