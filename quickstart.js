@@ -113,6 +113,7 @@ const actions = {
               recipient: { id },
               message: {text},
             });
+            console.log("whole json body : " + body);
         }
 
         return fbMessage(body)
@@ -436,7 +437,6 @@ function generateTemplateObject(jsonObject){
               };
   
   return JSON.stringify(json);   
-
 }
 
 
