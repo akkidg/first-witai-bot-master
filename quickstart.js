@@ -111,7 +111,7 @@ const actions = {
         }else if(!context.missingLocation && context.forecast){
             body = JSON.stringify({
               recipient: { id },
-              message: text,
+              message: JSON.stringify(text),
             });
         }
 
