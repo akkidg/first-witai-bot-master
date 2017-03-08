@@ -434,9 +434,9 @@ function generateTemplateObject(jsonObject){
                   }]
                   }
                 }
-                };
+              };
   
-  return JSON.stringify(json);   
+  return json;   
 
 }
 
