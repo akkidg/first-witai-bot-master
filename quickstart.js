@@ -109,10 +109,10 @@ const actions = {
               message: { text },
             });
         }else if(!context.missingLocation && context.forecast){
-            body = JSON.stringify({
+            body = {
               recipient: { id },
               message: text,
-            });
+            };
         }
 
         return fbMessage(body)
