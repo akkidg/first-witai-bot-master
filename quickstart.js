@@ -102,7 +102,19 @@ const actions = {
     if (recipientId) {
       return new Promise(function(resolve, reject){
 
-        return fbMessage(recipientId, text)
+        if((!context.missingLocation && context.country) || context.missingLocation){
+            const body = JSON.stringify({
+              recipient: { id },
+              message: { text },
+            });
+        }else if(!context.missingLocation && context.forecast){
+            const body = JSON.stringify({
+              recipient: { id },
+              message: text,
+            });
+        }
+
+        return fbMessage(recipientId, body)
         .then(() => null)
         .catch((err) => {
           console.error(
@@ -188,11 +200,8 @@ const wit = new Wit({
   logger: new log.Logger(log.INFO)
 });
 
-const fbMessage = (id,text) => {
-  const body = JSON.stringify({
-      recipient: { id },
-      message: { text },
-  });
+const fbMessage = (id,body) => {
+  
   const qs = 'access_token=' + encodeURIComponent(PAGE_ACCESS_TOKEN);
   return fetch('https://graph.facebook.com/me/messages?' + qs, {
     method: 'POST',
@@ -407,7 +416,7 @@ function generateTemplateObject(jsonObject){
             payload: {
               template_type: "generic",
               elements: [{
-                title: "Weather Forecast for " + jsonObject.name,
+                title: "Weather Forecast for " + jsonObject.name + " will be " + weatherObjectArray[0].description,
                 subtitle:"Temp. : " + mainObject.temp + "\n Wind Speed: " + windObject.speed  + "\n Humidity: " + mainObject.humidity,
                 item_url: "",               
                 image_url: "http://openweathermap.org/img/w/" + weatherObjectArray[0].icon + ".png",
