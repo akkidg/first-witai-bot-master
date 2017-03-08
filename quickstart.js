@@ -109,7 +109,7 @@ const actions = {
               message: { text },
             });
         }else if(!context.missingLocation && context.forecast){
-            attachment = text;
+            var attachment = text;
             body = JSON.stringify({
               recipient: { id },
               message: {attachment},
