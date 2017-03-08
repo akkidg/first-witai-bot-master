@@ -104,12 +104,12 @@ const actions = {
 
         if((!context.missingLocation && context.country) || context.missingLocation){
             const body = JSON.stringify({
-              recipient: { id },
+              recipient: { recipientId },
               message: { text },
             });
         }else if(!context.missingLocation && context.forecast){
             const body = JSON.stringify({
-              recipient: { id },
+              recipient: { recipientId },
               message: text,
             });
         }
