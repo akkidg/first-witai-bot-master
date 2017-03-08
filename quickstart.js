@@ -111,7 +111,7 @@ const actions = {
         }else if(!context.missingLocation && context.forecast){
             body = JSON.stringify({
               recipient: { id },
-              message: {text},
+              message: {attachment},
             });
             console.log("whole json body : " + body);
         }
@@ -418,7 +418,6 @@ function generateTemplateObject(jsonObject){
   var windObject = jsonObject.wind;
 
   var json = {
-              attachment:{
                 type: "template",
                 payload: {
                   template_type: "generic",
@@ -433,7 +432,6 @@ function generateTemplateObject(jsonObject){
                     }],
                   }]
                   }
-                }
               };
   
   return JSON.stringify(json);   
