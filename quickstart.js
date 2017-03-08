@@ -116,7 +116,7 @@ const actions = {
             });
         }
 
-        return fbMessage(recipientId, body)
+        return fbMessage(body)
         .then(() => null)
         .catch((err) => {
           console.error(
@@ -202,7 +202,7 @@ const wit = new Wit({
   logger: new log.Logger(log.INFO)
 });
 
-const fbMessage = (id,body) => {
+const fbMessage = (body) => {
   
   const qs = 'access_token=' + encodeURIComponent(PAGE_ACCESS_TOKEN);
   return fetch('https://graph.facebook.com/me/messages?' + qs, {
